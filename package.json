@@ -1,0 +1,22 @@
+{
+  "name": "desafioreact",
+  "version": "1.0.0",
+  "description": "aula",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cellisyohan/DesafioReact.git"
+  },
+  "author": "Cellis",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cellisyohan/DesafioReact/issues"
+  },
+  "homepage": "https://github.com/cellisyohan/DesafioReact#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
