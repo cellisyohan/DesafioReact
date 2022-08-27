@@ -11,13 +11,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Empresa.hasMany(models.Promocao,
+        {foreignKey:'EmpresaId', as:'empresaPromocao'});
     }
   }
   Empresa.init({
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
-    email: DataTypes.STRING
-  }, {
+    nome: DataTypes.STRING,
+    dataAdesao: DataTypes.DATEONLY
+    }, {
     sequelize,
     modelName: 'Empresa',
   });

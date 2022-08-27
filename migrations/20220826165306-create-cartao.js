@@ -8,14 +8,21 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      firstName: {
-        type: Sequelize.STRING
+      dataCartao: {
+        type: Sequelize.DATEONLY
       },
-      lastName: {
-        type: Sequelize.STRING
+      validade: {
+        type: Sequelize.DATEONLY
       },
-      email: {
-        type: Sequelize.STRING
+      ClienteId:{
+        type:Sequelize.INTEGER,
+        allowNull: false,
+        references:{
+          model: 'clientes',
+          key: 'id'
+        },
+        OnUpdate:'CASCADE',
+        OnDelete:'CASCADE'
       },
       createdAt: {
         allowNull: false,

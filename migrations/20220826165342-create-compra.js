@@ -8,14 +8,36 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      firstName: {
-        type: Sequelize.STRING
+      CartaoId:{
+        primaryKey:Sequelize.INTEGER,
+        type:Sequelize.INTEGER,
+        allowNull: false,
+        references:{
+          model: 'cartaos',
+          key: 'id'
+        },
+        OnUpdate:'CASCADE',
+        OnDelete:'CASCADE'
       },
-      lastName: {
-        type: Sequelize.STRING
+      PromocaoId:{
+        primaryKey:Sequelize.INTEGER,
+        type:Sequelize.INTEGER,
+        allowNull: false,
+        references:{
+          model: 'promocaos',
+          key: 'id'
+        },
+        OnUpdate:'CASCADE',
+        OnDelete:'CASCADE'
       },
-      email: {
-        type: Sequelize.STRING
+      data: {
+        type: Sequelize.DATEONLY
+      },
+      quantidade: {
+        type: Sequelize.INTEGER
+      },
+      valor: {
+        type: Sequelize.FLOAT
       },
       createdAt: {
         allowNull: false,
