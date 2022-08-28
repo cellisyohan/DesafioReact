@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Cliente.hasMany(models.Cartao,{
-        foreignKey:'CartaoId', as: 'clienteCartao'
+        foreignKey:'ClienteId', as: 'clienteCartao'
       })
     }
   }
@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     cidade: DataTypes.STRING,
     uf: DataTypes.STRING,
     nascimento: DataTypes.DATEONLY
-  }, {
+  }, {   
     sequelize,
     modelName: 'Cliente',
   });

@@ -8,10 +8,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      CartaoId:{
+      Cartao_Id:{
         primaryKey:Sequelize.INTEGER,
         type:Sequelize.INTEGER,
-        allowNull: false,
         references:{
           model: 'cartaos',
           key: 'id'
@@ -19,10 +18,9 @@ module.exports = {
         OnUpdate:'CASCADE',
         OnDelete:'CASCADE'
       },
-      PromocaoId:{
+      Promocao_Id:{
         primaryKey:Sequelize.INTEGER,
         type:Sequelize.INTEGER,
-        allowNull: false,
         references:{
           model: 'promocaos',
           key: 'id'
