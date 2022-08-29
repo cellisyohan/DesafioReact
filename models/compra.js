@@ -12,17 +12,19 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       //define association here
       Compra.belongsTo(models.Cartao,
-        {foreignKey:'Cartao_Id', as: 'compraCartao'});
+        {foreignKey:'CartaoId', as: 'compraCartao',
+         constraints: true});
       Compra.hasMany(models.Promocao,
-        {foreignKey:'Promocao_Id', as:'compraPromocao'});
+        {foreignKey:'PromocaoId', as:'compraPromocao',
+          constraints: true});
     }
   }
   Compra.init({
     data: DataTypes.DATEONLY,
     quantidade: DataTypes.INTEGER,
     valor: DataTypes.FLOAT,
-    Cartao_Id: DataTypes.INTEGER,
-    Promocao_Id: DataTypes.INTEGER
+    CartaoId: DataTypes.INTEGER,
+    PromocaoId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Compra',

@@ -12,18 +12,18 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Promocao.belongsToMany(models.Cartao,
-        {foreignKey:'Cartao_Id', through:'Compra', as:'cartao_Promocao'});
+        {foreignKey:'CartaoId', through:'Compra', as:'cartaoPromocao'});
       Promocao.belongsTo(models.Empresa,
-        {foreignKey:'Empresa_Id', as:'promocao_Empresa'});
+        {foreignKey:'EmpresaId', as:'promocaoEmpresa'});
       Promocao.hasMany(models.Compra,
-        {foreignKey:'Promocao_Id', as:'promocao_Compra'});
+        {foreignKey:'PromocaoId', as:'promocaoCompra'});
     }
   }
   Promocao.init({
     nome: DataTypes.STRING,
     descricao: DataTypes.STRING,
     validade: DataTypes.DATEONLY,
-    //Empresa_Id: DataTypes.INTEGER
+    EmpresaId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Promocao',

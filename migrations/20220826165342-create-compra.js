@@ -1,6 +1,6 @@
 'use strict';
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  up : async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Compras', {
       id: {
         allowNull: false,
@@ -8,9 +8,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      Cartao_Id:{
+      CartaoId:{
         primaryKey:Sequelize.INTEGER,
         type:Sequelize.INTEGER,
+        constraints: true,
         references:{
           model: 'cartaos',
           key: 'id'
@@ -18,9 +19,10 @@ module.exports = {
         OnUpdate:'CASCADE',
         OnDelete:'CASCADE'
       },
-      Promocao_Id:{
+      PromocaoId:{
         primaryKey:Sequelize.INTEGER,
         type:Sequelize.INTEGER,
+        constraints: true,
         references:{
           model: 'promocaos',
           key: 'id'
@@ -47,7 +49,7 @@ module.exports = {
       }
     });
   },
-  async down(queryInterface, Sequelize) {
+  down : async(queryInterface, Sequelize) => {
     await queryInterface.dropTable('Compras');
   }
 };
