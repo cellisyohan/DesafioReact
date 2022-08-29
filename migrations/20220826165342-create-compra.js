@@ -2,12 +2,6 @@
 module.exports = {
   up : async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Compras', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
       CartaoId:{
         primaryKey:Sequelize.INTEGER,
         type:Sequelize.INTEGER,
@@ -29,6 +23,12 @@ module.exports = {
         },
         OnUpdate:'CASCADE',
         OnDelete:'CASCADE'
+      },
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
       },
       data: {
         type: Sequelize.DATEONLY

@@ -1,13 +1,7 @@
 'use strict';
 module.exports = {
   up : async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Promocaos', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
+    await queryInterface.createTable('Promocaos',{
       EmpresaId:{
         type:Sequelize.INTEGER,
         allowNull: true,
@@ -17,6 +11,12 @@ module.exports = {
         },
         OnUpdate:'CASCADE',
         OnDelete:'CASCADE'
+      },
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
       },
       nome: {
         type: Sequelize.STRING

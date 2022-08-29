@@ -2,6 +2,16 @@
 module.exports = {
   up : async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Cartaos', {
+      ClienteId:{
+        type:Sequelize.INTEGER,
+        allowNull: false,
+        references:{
+          model: 'clientes',
+          key: 'id'
+        },
+        OnUpdate:'CASCADE',
+        OnDelete:'CASCADE'
+      },
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -14,17 +24,6 @@ module.exports = {
       validade: {
         type: Sequelize.DATEONLY
       },
-      ClienteId:{
-        type:Sequelize.INTEGER,
-        allowNull: false,
-        references:{
-          model: 'clientes',
-          key: 'id'
-        },
-        OnUpdate:'CASCADE',
-        OnDelete:'CASCADE'
-      },
-      
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
