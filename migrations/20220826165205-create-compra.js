@@ -2,10 +2,15 @@
 module.exports = {
   up : async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Compras', {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
+      },
       CartaoId:{
-        primaryKey:Sequelize.INTEGER,
+        allowNull: false,
         type:Sequelize.INTEGER,
-        constraints: true,
         references:{
           model: 'cartaos',
           key: 'id'
@@ -14,21 +19,14 @@ module.exports = {
         OnDelete:'CASCADE'
       },
       PromocaoId:{
-        primaryKey:Sequelize.INTEGER,
+        allowNull:false,
         type:Sequelize.INTEGER,
-        constraints: true,
         references:{
           model: 'promocaos',
           key: 'id'
         },
         OnUpdate:'CASCADE',
         OnDelete:'CASCADE'
-      },
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
       },
       data: {
         type: Sequelize.DATEONLY

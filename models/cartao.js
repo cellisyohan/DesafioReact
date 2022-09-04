@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       Cartao.hasMany(models.Compra,{
         foreignKey:'CartaoId', as: 'cartaoCompras'});
       Cartao.belongsToMany(models.Promocao,{
-        foreignKey:'PromocaoId', through:'Compra', as:'cartaoPromocao'});
+        foreignKey:'PromocaoId', through:'CompraId', as:'cartaoPromocao'});
     };
   };
   Cartao.init({

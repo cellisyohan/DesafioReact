@@ -12,11 +12,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       //define association here
       Compra.belongsTo(models.Cartao,
-        {foreignKey:'CartaoId', as: 'compraCartao',
-         constraints: true});
-      Compra.hasMany(models.Promocao,
-        {foreignKey:'PromocaoId', as:'compraPromocao',
-          constraints: true});
+        {foreignKey:'CartaoId', as: 'compraCartao'});
+      Compra.belongsTo(models.Promocao,  // com o HASMANY não funcionou so com o BELONGSTO
+        {foreignKey:'PromocaoId', as:'promocaoCompra'});
     }
   }
   Compra.init({

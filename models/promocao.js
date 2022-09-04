@@ -4,20 +4,15 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Promocao extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
       // define association here
-      Promocao.belongsToMany(models.Cartao,
-        {foreignKey:'CartaoId', through:'Compra', as:'cartaoPromocao'});
-      Promocao.belongsTo(models.Empresa,
-        {foreignKey:'EmpresaId', as:'promocaoEmpresa'});
-      Promocao.hasMany(models.Compra,
-        {foreignKey:'PromocaoId', as:'promocaoCompra'});
-    }
+      Promocao.belongsTo(models.Empresa,{
+        foreignKey:'EmpresaId', as: 'promocaoEmpresa'});
+      Promocao.hasMany(models.Compra,{
+        foreignKey:'PromocaoId', as:'promocaoCompra'});
+      Promocao.belongsToMany(models.Cartao,{
+        foreignKey:'PromocaoId', through:'CompraId', as:'promocaoCartao'});
+    };
   }
   Promocao.init({
     nome: DataTypes.STRING,
