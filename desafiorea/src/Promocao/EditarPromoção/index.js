@@ -3,24 +3,23 @@ import { Link, useParams } from "react-router-dom"
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { api } from "../../config";
-export const EditarCliente = () => {
+export const EditarPromocao = () => {
     const params = useParams();
     const [id, setId] = useState(params.id);
+    const [EmpresaId, setEmpresaId] = useState();
     const [nome, setNome] = useState();
-    const [cidade, setCidade] = useState();
-    const [uf, setUf] = useState();
-    const [nascimento, setNascimento] = useState();
+    const [descricao, setDescricao] = useState();
+    const [validade, setValidade] = useState();
     const [status, setStatus] = useState({
         type: '',
         message: ''
     })
-
-    const edtCliente = async e => {
+    const edtPromocao = async e => {
         e.preventDefault();
         const headers = {
             'Content-type': 'application/json'
         }
-        await axios.put(api + "/cliente/" + id, { id, nome, cidade, uf, nascimento }, { headers })
+        await axios.put(api + "/promocao/" + id, { id, EmpresaId, nome, descricao, validade }, { headers })
             .then((response) => {
                 setStatus({
                     type: 'success',
@@ -37,29 +36,32 @@ export const EditarCliente = () => {
             })
     }
     useEffect(() => {
-        const getCliente = async () => {
-            await axios.get(api + "/ucliente/" + id)
+        const getPromocao = async () => {
+            await axios.get(api + "/upromo/" + id)
                 .then((response) => {
-                    setId(response.data.umCli.id)
-                    setNome(response.data.umCli.nome)
-                    setCidade(response.data.umCli.cidade)
-                    setUf(response.data.umCli.uf)
-                    setNascimento(response.data.umCli.nascimento)
+                    setId(response.data.uprom.id)
+                    setEmpresaId(response.data.uprom.EmpresaId)
+
+                    setNome(response.data.uprom.nome)
+                    setDescricao(response.data.uprom.descricao)
+                    setValidade(response.data.uprom.validade)
+                    // setUf(response.data.umCli.uf)
+                    // setNascimento(response.data.umCli.nascimento)                  
                 })
                 .catch(() => {
                     console.log("Erro: sem conexão com a API.")
                 })
         }
-        getCliente()
+        getPromocao();
     }, [id])
     return (
         <div>
             <Container>
                 <div className="d-flex p-2">
                     <div className="m-auto p-2">
-                        <h1> Editar o Cliente </h1>
+                        <h1> Editar Promoção </h1>
                     </div>
-                    <div className="p-2">
+                    <div className="m-auto p-2">
                         <Link to="/listar-clientes"
                             className="m-auto btn p-2 btn-outline-primary btn-se">Lista de Clientes</Link>
                         <Link to="/lista-empresas"
@@ -73,45 +75,43 @@ export const EditarCliente = () => {
                     {status.type === 'success' ?
                         <Alert color="success">{status.message}</Alert> : ""}
                 </div>
-                <Form className="p-2" onSubmit={edtCliente}>
+                <Form className="p-2" onSubmit={edtPromocao}>
                     <FormGroup className="p-2">
                         <Label>Id</Label>
                         <Input name="id"
-                            placeholder="Id do Cliente"
+                            placeholder="Id da Empresa"
                             defaultValue={id} />
                     </FormGroup>
-                    <FormGroup>
-                        <Label>Nome</Label>
+                    <FormGroup className="p-2">
+                        <Label>Nº da Empresa</Label>
+                        <Input name="EmpresaId"
+                            placeholder="Id da Empresa"
+                            defaultValue={EmpresaId} />
+                    </FormGroup>
+                    <FormGroup className="p-2">
+                        <Label>Nome da Promoção</Label>
                         <Input name="nome"
-                            placeholder="Digite o nome do Cliente"
-                            type="text"
+                            placeholder="Nome da Empresa"
                             value={nome} onChange={e => setNome(e.target.value)} />
                     </FormGroup>
                     <FormGroup>
-                        <Label>Cidade</Label>
-                        <Input name="cidade"
-                            placeholder="digite sua Cidade"
+                        <Label>Descrição da Promoção</Label>
+                        <Input name="descricao"
+                            placeholder="Descrição da Promoção"
                             type="text"
-                            value={cidade} onChange={e => setCidade(e.target.value)} />
+                            value={descricao} onChange={e => setDescricao(e.target.value)} />
                     </FormGroup>
                     <FormGroup>
-                        <Label>Estado</Label>
-                        <Input name="uf"
-                            placeholder="digite seu Estado"
+                        <Label>Validade da Promoção</Label>
+                        <Input name="validade"
+                            placeholder="Digite a data do cadastro"
                             type="text"
-                            value={uf} onChange={e => setUf(e.target.value)} />
+                            value={validade} onChange={e => setValidade(e.target.value)} />
                     </FormGroup>
-                    <FormGroup>
-                        <Label>Data Nascimento</Label>
-                        <Input name="nascimento"
-                            placeholder="Data de Nascimento"
-                            type="text"
-                            value={nascimento} onChange={e => setNascimento(e.target.value)} />
-                    </FormGroup>
-                    <FormGroup className="d-flex">
+                    <FormGroup className="d-flex ">
                     <Button type="submit" outline color="dark">Salvar</Button>
-                        <Link to="/listar-clientes"
-                            className="btn btn-outline-primary btn-se">Retornar</Link>
+                        <Link to="/lista-empresas"
+                             className="btn btn-outline-primary btn-se">Retornar</Link>
                     </FormGroup>
                 </Form>
             </Container>

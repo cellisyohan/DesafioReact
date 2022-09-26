@@ -3,24 +3,24 @@ import { Link, useParams } from "react-router-dom"
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { api } from "../../config";
-export const EditarCliente = () => {
+export const EditarCompras = () => {
     const params = useParams();
     const [id, setId] = useState(params.id);
-    const [nome, setNome] = useState();
-    const [cidade, setCidade] = useState();
-    const [uf, setUf] = useState();
-    const [nascimento, setNascimento] = useState();
+    const [data, setData] = useState();
+    const [quantidade, setQuantidade] = useState();
+    const [valor, setValor] = useState();
+    const [CartaoId, setCartaoId] = useState();
+    const [PromocaoId, setPromocaoId] = useState();
     const [status, setStatus] = useState({
         type: '',
         message: ''
     })
-
-    const edtCliente = async e => {
+    const edtCompra = async e => {
         e.preventDefault();
         const headers = {
             'Content-type': 'application/json'
         }
-        await axios.put(api + "/cliente/" + id, { id, nome, cidade, uf, nascimento }, { headers })
+        await axios.put(api + "/compras/" + id, { id, data, quantidade, valor, CartaoId, PromocaoId }, { headers })
             .then((response) => {
                 setStatus({
                     type: 'success',
@@ -37,27 +37,28 @@ export const EditarCliente = () => {
             })
     }
     useEffect(() => {
-        const getCliente = async () => {
-            await axios.get(api + "/ucliente/" + id)
+        const getCompra = async () => {
+            await axios.get(api + "/ucompra/" + id)
                 .then((response) => {
-                    setId(response.data.umCli.id)
-                    setNome(response.data.umCli.nome)
-                    setCidade(response.data.umCli.cidade)
-                    setUf(response.data.umCli.uf)
-                    setNascimento(response.data.umCli.nascimento)
+                    setId(response.data.uComp.id)
+                    setData(response.data.uComp.data)
+                    setQuantidade(response.data.uComp.quantidade)
+                    setValor(response.data.uComp.valor)
+                    setCartaoId(response.data.uComp.CartaoId)
+                    setPromocaoId(response.data.uComp.PromocaoId)
                 })
                 .catch(() => {
                     console.log("Erro: sem conexão com a API.")
                 })
         }
-        getCliente()
+        getCompra();
     }, [id])
     return (
         <div>
             <Container>
                 <div className="d-flex p-2">
                     <div className="m-auto p-2">
-                        <h1> Editar o Cliente </h1>
+                        <h1> Atualizar/Alterar Compra </h1>
                     </div>
                     <div className="p-2">
                         <Link to="/listar-clientes"
@@ -73,7 +74,7 @@ export const EditarCliente = () => {
                     {status.type === 'success' ?
                         <Alert color="success">{status.message}</Alert> : ""}
                 </div>
-                <Form className="p-2" onSubmit={edtCliente}>
+                <Form className="m-auto" onSubmit={edtCompra}>
                     <FormGroup className="p-2">
                         <Label>Id</Label>
                         <Input name="id"
@@ -81,40 +82,50 @@ export const EditarCliente = () => {
                             defaultValue={id} />
                     </FormGroup>
                     <FormGroup>
-                        <Label>Nome</Label>
-                        <Input name="nome"
+                        <Label>Data da Compra</Label>
+                        <Input name="data"
                             placeholder="Digite o nome do Cliente"
                             type="text"
-                            value={nome} onChange={e => setNome(e.target.value)} />
+                            value={data} onChange={e => setData(e.target.value)} />
                     </FormGroup>
                     <FormGroup>
-                        <Label>Cidade</Label>
-                        <Input name="cidade"
-                            placeholder="digite sua Cidade"
+                        <Label>Quantidade</Label>
+                        <Input name="quantidade"
+                            placeholder="digite a quantidade de item"
                             type="text"
-                            value={cidade} onChange={e => setCidade(e.target.value)} />
+                            value={quantidade} onChange={e => setQuantidade(e.target.value)} />
                     </FormGroup>
                     <FormGroup>
-                        <Label>Estado</Label>
-                        <Input name="uf"
+                        <Label>Valor</Label>
+                        <Input name="valor"
                             placeholder="digite seu Estado"
                             type="text"
-                            value={uf} onChange={e => setUf(e.target.value)} />
+                            value={valor} onChange={e => setValor(e.target.value)} />
                     </FormGroup>
                     <FormGroup>
-                        <Label>Data Nascimento</Label>
-                        <Input name="nascimento"
+                        <Label>Nº do Cartão</Label>
+                        <Input name="CartaoId"
                             placeholder="Data de Nascimento"
                             type="text"
-                            value={nascimento} onChange={e => setNascimento(e.target.value)} />
+                            defaultValue={CartaoId} />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label>Nº da Promoção</Label>
+                        <Input name="PromocaoId"
+                            placeholder="Nº da Promoção"
+                            type="text"
+                            defaultValue={PromocaoId} />
                     </FormGroup>
                     <FormGroup className="d-flex">
-                    <Button type="submit" outline color="dark">Salvar</Button>
-                        <Link to="/listar-clientes"
+                        <Button type="submit" outline color="dark">Salvar</Button>
+                        <Link to={"/lista-umacompra/" + CartaoId}
                             className="btn btn-outline-primary btn-se">Retornar</Link>
                     </FormGroup>
+
                 </Form>
             </Container>
         </div>
     )
 }
+
+

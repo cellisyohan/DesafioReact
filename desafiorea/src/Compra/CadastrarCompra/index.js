@@ -4,32 +4,33 @@ import { useState } from "react"
 import axios from "axios"
 import { api } from "../../config"
 
-export const CadastrarCartao = () => {
+export const CadastrarCompra = () => {
 
     const params = useParams();
     const [id] = useState(params.id);
-    const [ClienteId] = useState(params.id);
-    const [dataCartao, setDataCartao] = useState();
-    const [validade, setValidade] = useState();
-
+    const [data, setData] = useState();
+    const [quantidade, setQuantidade] = useState();
+    const [valor, setValor] = useState();
+    const [CartaoId] = useState(params.id);
+    const [PromocaoId, setPromocaoId] = useState();
     const [status, setStatus] = useState({
         type: '',
         message: ''
     })
 
-    const cadCartao = async e => {
+    const cadCompra = async e => {
         e.preventDefault();
 
         const headers = {
             'Content-type': 'application/json'
         }
 
-        await axios.post(api + "/cartao/cliente/" + id,
-            { ClienteId, dataCartao, validade }, { headers })
+        await axios.post(api + "/compras",
+            { id, CartaoId, PromocaoId, data, quantidade, valor }, { headers })
             .then((response) => {
                 setStatus({
                     type: 'success',
-                    message: 'Cartão Cadastrado com Sucesso.'
+                    message: 'Compra Realizada com Sucesso.'
                 })
                 console.log(response.data.type)
                 console.log(response.data.message)
@@ -39,15 +40,14 @@ export const CadastrarCartao = () => {
                     type: 'Error',
                     message: 'Erro: Nao foi possivel alterar'
                 })
-            })
+            })            
     }
-
     return (
         <div>
             <Container>
-                <div className="d-flex -2">
+                <div className="d-flex p-2">
                     <div className="m-auto p-2">
-                        <h1> Cadastrar Cartão Do Cliente </h1>
+                        <h1> Cadastrar Compra Do Cliente </h1>
                     </div>
                     <div className="p-2">
                         <Link to="/listar-clientes"
@@ -63,32 +63,47 @@ export const CadastrarCartao = () => {
                     {status.type === 'success' ?
                         <Alert color="success">{status.message}</Alert> : ""}
                 </div>
-                <Form className="p-2" onSubmit={cadCartao}>
+                <Form className="p-2" onSubmit={cadCompra}>
                     <FormGroup>
-                        <Label>Id do Cliente</Label>
-                        <Input name="ClienteId"
-                            placeholder="Id do Cliente"
+                        <Label>Nº do Cartão</Label>
+                        <Input name="CartaoId"
+                            placeholder="Numero do Cartão"
                             type="text"
-                            defaultValue={ClienteId} />
+                            defaultValue={CartaoId} />
                     </FormGroup>
                     <FormGroup>
-                        <Label>Data do Cartão</Label>
-                        <Input name="dataCartao"
-                            placeholder="Digite a data do Cartao"
+                        <Label>Nº da Promoção</Label>
+                        <Input name="PromocaoId"
+                            placeholder="Numero da Promoção"
                             type="text"
-                            value={dataCartao} onChange={e => setDataCartao(e.target.value)} />
+                            value={PromocaoId} onChange={e => setPromocaoId(e.target.value)} />
                     </FormGroup>
                     <FormGroup>
-                        <Label>Validade do Cartão</Label>
-                        <Input name="validade"
-                            placeholder="Data de Validade"
+                        <Label>Data do Compra</Label>
+                        <Input name="data"
+                            placeholder="Digite a data do Compra"
                             type="text"
-                            value={validade} onChange={e => setValidade(e.target.value)} />
+                            value={data} onChange={e => setData(e.target.value)} />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label>Quantidade</Label>
+                        <Input name="quantidade"
+                            placeholder="Quantidade de Item"
+                            type="text"
+                            value={quantidade} onChange={e => setQuantidade(e.target.value)} />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label>valor</Label>
+                        <Input name="valor"
+                            placeholder="Valor da compra"
+                            type="text"
+                            value={valor} onChange={e => setValor(e.target.value)} />
                     </FormGroup>
 
                     <FormGroup className="d-flex">
                         <Button type="submit" outline color="dark">Salvar</Button>
-                        <Link to={"/cartao-cliente/" + id}
+                        <Button type="reset" outline color="info">Limpar</Button>
+                        <Link to={"/lista-umacompra/" + CartaoId}
                             className="btn btn-outline-primary btn-se">Retornar</Link>
                     </FormGroup>
                 </Form>

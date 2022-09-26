@@ -88,13 +88,14 @@ app.post('/empresa', async (req, res) => {
 });
 
 //Cadastro de Promoções
-app.post('/empresa/:id/promocao', async (req, res) => {
-    const prom = {
-        nome: req.body.nome,
-        descricao: req.body.descricao,
-        validade: req.body.validade,
-        EmpresaId: req.params.id
-    };
+app.post('/promocao/empresa/:id', async (req, res) => {
+    const prom = (
+        // nome: req.body.nome,
+        // descricao: req.body.descricao,
+        // validade: req.body.validade,
+        // EmpresaId: req.params.id
+        req.body
+    );
     if (! await empresa.findByPk(req.params.id)) {
         return res.status(400).json({
             error: true,
@@ -118,6 +119,12 @@ app.post('/empresa/:id/promocao', async (req, res) => {
 
 //Realizar Compras
 app.post('/compras', async (req, res) => {
+    // if (! await promocao.findByPk(req.params.id)) {
+    //     return res.status(400).json({
+    //         error: true,
+    //         message: "Cartão não existe."
+    //     });
+    // };
     await compra.create(
         req.body
     ).then(comp => {
@@ -136,8 +143,8 @@ app.post('/compras', async (req, res) => {
 
 // Listar os Clientes
 app.get('/clientes', async (req, res) => {
-    await cliente.findAll(
-        req.params.id
+    await cliente.findAll({include:[{all:true}]}
+    
     ).then(clie => {
         return res.json({
             error: false,
@@ -151,21 +158,54 @@ app.get('/clientes', async (req, res) => {
     });
 });
 
+// Listar Um Cliente
+app.get('/ucliente/:id', async (req, res) => {
+    await cliente.findByPk(
+        req.params.id
+    ).then(umCli => {
+        return res.json({
+            error: false,
+            umCli
+        });
+    }).catch(erro => {
+        return res.status(400).json({
+            error: true,
+            message: " Problema na conexão da API"
+        });
+    });
+});
 //Listar as Empresas
 app.get('/empresas', async (req, res) => {
     await empresa.findAll(
         req.params.id
-        ).then(emp => { 
-            return res.json({ 
-                error: false, 
-                emp 
-            }); 
-        }).catch(erro => { 
-            return res.status(400).json({ 
-                error: true, 
-                message: " Problema na conexão da API " 
-            }); 
+    ).then(emp => {
+        return res.json({
+            error: false,
+            emp
         });
+    }).catch(erro => {
+        return res.status(400).json({
+            error: true,
+            message: " Problema na conexão da API "
+        });
+    });
+});
+
+// Listar Uma Empresa
+app.get('/uempresa/:id', async (req, res) => {
+    await empresa.findByPk(
+        req.params.id
+    ).then(umEmp => {
+        return res.json({
+            error: false,
+            umEmp
+        });
+    }).catch(erro => {
+        return res.status(400).json({
+            error: true,
+            message: " Problema na conexão da API"
+        });
+    });
 });
 
 //Listar os Cartões
@@ -201,6 +241,7 @@ app.get('/promo', async (req, res) => {
         });
     });
 });
+
 //Listar compras
 app.get('/compras', async (req, res) => {
     await compra.findAll(
@@ -218,6 +259,80 @@ app.get('/compras', async (req, res) => {
     });
 });
 
+//listar uma compra
+app.get('/ucompra/:id', async (req, res) => {
+    await compra.findByPk(
+        req.params.id
+    ).then(uComp => {
+        return res.json({
+            error: false,
+            uComp
+        });
+    }).catch(erro => {
+        return res.status(400).json({
+            error: true,
+            message: " problema na conexão com a API."
+        });
+    });
+});
+
+//listar compra de um cartao
+app.get('/compra/cartao/:id', async(req,res)=>{
+    if (! await cartao.findByPk(req.params.id)) {
+        return res.status(400).json({
+            error: true,
+            message: "Cartao não encontrado."
+        });
+    };
+    await compra.findAll({
+        where: { CartaoId: req.params.id }
+    })
+        .then(compc => {
+            return res.json({
+                error: false,
+                compc
+            });
+        }).catch(erro => {
+            return res.status(400).json({
+                error: true,
+                message: " problema na conexão com a API."
+            });
+        });
+})
+
+// Listar as Promoções de uma empresa
+app.get('/upromo/empresa/:id', async (req, res) => {
+    await promocao.findAll({
+        where: { EmpresaId: req.params.id }
+    }).then(umpro => {
+        return res.json({
+            error: false,
+            umpro
+        });
+    }).catch(erro => {
+        return res.status(400).json({
+            error: true,
+            message: " Problema na conexão da API"
+        });
+    });
+});
+
+// Listar Uma Promoção
+app.get('/upromo/:id', async (req, res) => {
+    await promocao.findByPk(
+        req.params.id 
+    ).then(uprom => {
+        return res.json({
+            error: false,
+            uprom
+        });
+    }).catch(erro => {
+        return res.status(400).json({
+            error: true,
+            message: " Problema na conexão da API"
+        });
+    });
+});
 //listar cartão de um cliente
 app.get('/cartao/cliente/:id', async (req, res) => {
     if (! await cliente.findByPk(req.params.id)) {
@@ -242,55 +357,32 @@ app.get('/cartao/cliente/:id', async (req, res) => {
         });
 });
 
-//listar compras de um cartão
-app.get('/compras/cartao/:id', async (req, res) => {
-    if (! await cartao.findByPk(req.params.id)) {
-        return res.status(400).json({
-            error: true,
-            message: "Cartão não cadastrado."
-        });
-    };
-    await compra.findAll({
-        where: { CartaoId: req.params.id }
-    })
-        .then(compc => {
-            return res.json({
-                error: false,
-                compc
-            });
-        }).catch(erro => {
-            return res.status(400).json({
-                error: true,
-                message: " problema na conexão com a API."
-            });
-        });
-});
-
 //listar um cartao
 app.get('/cartao/:id', async (req, res) => {
     await cartao.findByPk(
         req.params.id
-        ).then(cat => { 
-            return res.json({ 
-                error: false, 
-                cat 
-				}); 
-				}).catch(erro => { 
-		return res.status(400).json({ 
-		error: true, 
-		message: " problema na conexão com a API." 
-		}); 
-		});
+    ).then(cat => {
+        return res.json({
+            error: false,
+            cat
+        });
+    }).catch(erro => {
+        return res.status(400).json({
+            error: true,
+            message: " problema na conexão com a API."
+        });
+    });
 });
 
 // Alterar Cliente
 app.put('/cliente/:id', async (req, res) => {
     const cli = (
-        // nome: req.body.data,            //
-        // cidade: req.body.cidade,        //pode ser assim também
-        // uf: req.body.uf,                //
-        // nascimento: req.body.nascimento //
+        // {nome: req.body.data, 
+        // nascimento: req.body.nascimento,           //
+        // cidade: req.body.cidade,                   //pode ser assim também
+        // uf: req.body.uf}                            //
         req.body
+
     );
     if (! await cliente.findByPk(req.params.id)) {
         return res.status(400).json({
@@ -464,7 +556,7 @@ app.delete('/excliente/:id', async (req, res) => {
 });
 
 //Excluir Cartão
-app.delete('/cartao/:id', async (req, res) => {
+app.delete('/excccartao/:id', async (req, res) => {
     if (! await cartao.findByPk(req.params.id)) {
         return res.status(400).json({
             error: true,
@@ -486,8 +578,8 @@ app.delete('/cartao/:id', async (req, res) => {
     });
 });
 
-//Excluir Compras
-app.delete('/compras/:id', async (req, res) => {
+//Excluir Compra
+app.delete('/excCompra/:id', async (req, res) => {
     if (! await compra.findByPk(req.params.id)) {
         return res.status(400).json({
             error: true,
@@ -533,7 +625,7 @@ app.delete('/empresa/:id', async (req, res) => {
 });
 
 //Excluir Promoção
-app.delete('/promocao/:id', async (req, res) => {
+app.delete('/excpromocao/:id', async (req, res) => {
     if (! await promocao.findByPk(req.params.id)) {
         return res.status(400).json({
             error: true,

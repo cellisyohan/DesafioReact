@@ -1,35 +1,28 @@
 import { Alert, Button, Container, Form, FormGroup, Input, Label } from "reactstrap"
-import { Link, useParams } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { useState } from "react"
 import axios from "axios"
 import { api } from "../../config"
-
-export const CadastrarCartao = () => {
-
-    const params = useParams();
-    const [id] = useState(params.id);
-    const [ClienteId] = useState(params.id);
-    const [dataCartao, setDataCartao] = useState();
-    const [validade, setValidade] = useState();
-
+export const CadastrarEmpresa = () => {
+    const [empresa, setEmpresa] = useState({
+        nome: ''
+    })
     const [status, setStatus] = useState({
         type: '',
         message: ''
     })
-
-    const cadCartao = async e => {
+    const valorImput = e =>
+        setEmpresa({ ...empresa, [e.target.name]: e.target.value })
+    const cadEmpresa = async e => {
         e.preventDefault();
-
         const headers = {
             'Content-type': 'application/json'
         }
-
-        await axios.post(api + "/cartao/cliente/" + id,
-            { ClienteId, dataCartao, validade }, { headers })
+        await axios.post(api + "/empresa", empresa, { headers })
             .then((response) => {
                 setStatus({
                     type: 'success',
-                    message: 'Cartão Cadastrado com Sucesso.'
+                    message: 'Empresa Cadastrado com Sucesso.'
                 })
                 console.log(response.data.type)
                 console.log(response.data.message)
@@ -37,17 +30,17 @@ export const CadastrarCartao = () => {
             .catch(() => {
                 setStatus({
                     type: 'Error',
-                    message: 'Erro: Nao foi possivel alterar'
+                    message: 'Erro: Nao foi possivel Cadastrar a empresa'
                 })
+                console.log("Erro: sem conexão com a API")
             })
     }
-
     return (
         <div>
             <Container>
-                <div className="d-flex -2">
+                <div className="d-flex p-2">
                     <div className="m-auto p-2">
-                        <h1> Cadastrar Cartão Do Cliente </h1>
+                        <h1> Cadastrar Nova Empresa </h1>
                     </div>
                     <div className="p-2">
                         <Link to="/listar-clientes"
@@ -63,36 +56,30 @@ export const CadastrarCartao = () => {
                     {status.type === 'success' ?
                         <Alert color="success">{status.message}</Alert> : ""}
                 </div>
-                <Form className="p-2" onSubmit={cadCartao}>
-                    <FormGroup>
-                        <Label>Id do Cliente</Label>
-                        <Input name="ClienteId"
-                            placeholder="Id do Cliente"
+                <Form className="p-2" onSubmit={cadEmpresa}>
+                    <FormGroup className="p-2">
+                        <Label>Nome</Label>
+                        <Input name="nome"
+                            placeholder="Digite o nome da Empresa"
                             type="text"
-                            defaultValue={ClienteId} />
+                            onChange={valorImput} />
                     </FormGroup>
-                    <FormGroup>
-                        <Label>Data do Cartão</Label>
-                        <Input name="dataCartao"
-                            placeholder="Digite a data do Cartao"
+                    <FormGroup className="p-2">
+                        <Label>Data da Adesão</Label>
+                        <Input name="dataAdesao"
+                            placeholder="Data de Cadastro"
                             type="text"
-                            value={dataCartao} onChange={e => setDataCartao(e.target.value)} />
+                            onChange={valorImput} />
                     </FormGroup>
-                    <FormGroup>
-                        <Label>Validade do Cartão</Label>
-                        <Input name="validade"
-                            placeholder="Data de Validade"
-                            type="text"
-                            value={validade} onChange={e => setValidade(e.target.value)} />
-                    </FormGroup>
-
-                    <FormGroup className="d-flex">
+                    <FormGroup className="d-flex p-2">
                         <Button type="submit" outline color="dark">Salvar</Button>
-                        <Link to={"/cartao-cliente/" + id}
+                        <Button type="reset" outline color="info">Limpar</Button>
+                        <Link to="/lista-empresas"
                             className="btn btn-outline-primary btn-se">Retornar</Link>
                     </FormGroup>
+
                 </Form>
             </Container>
-        </div>
+        </div>                           //formGroup permiti colocar um botão ao lado do outro
     )
 }

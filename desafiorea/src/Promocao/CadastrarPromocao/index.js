@@ -3,33 +3,28 @@ import { Link, useParams } from "react-router-dom"
 import { useState } from "react"
 import axios from "axios"
 import { api } from "../../config"
-
-export const CadastrarCartao = () => {
-
+export const CadastrarPromocao = () => {
     const params = useParams();
     const [id] = useState(params.id);
-    const [ClienteId] = useState(params.id);
-    const [dataCartao, setDataCartao] = useState();
+    const [EmpresaId] = useState();
+    const [nome, setNome] = useState();
+    const [descricao, setDescricao] = useState();
     const [validade, setValidade] = useState();
-
     const [status, setStatus] = useState({
         type: '',
         message: ''
     })
-
-    const cadCartao = async e => {
+    const cadPromocao = async e => {
         e.preventDefault();
-
         const headers = {
             'Content-type': 'application/json'
         }
-
-        await axios.post(api + "/cartao/cliente/" + id,
-            { ClienteId, dataCartao, validade }, { headers })
+        await axios.post(api + "/promocao/empresa/" + id,
+            { id, EmpresaId, nome, descricao, validade }, { headers })
             .then((response) => {
                 setStatus({
                     type: 'success',
-                    message: 'Cartão Cadastrado com Sucesso.'
+                    message: 'Promoção Cadastrada com Sucesso.'
                 })
                 console.log(response.data.type)
                 console.log(response.data.message)
@@ -41,19 +36,16 @@ export const CadastrarCartao = () => {
                 })
             })
     }
-
     return (
         <div>
             <Container>
-                <div className="d-flex -2">
+                <div className="d-flex">
                     <div className="m-auto p-2">
-                        <h1> Cadastrar Cartão Do Cliente </h1>
+                        <h1> Cadastrar Promoção </h1>
                     </div>
                     <div className="p-2">
                         <Link to="/listar-clientes"
-                            className="m-auto btn p-2 btn-outline-primary btn-se">Lista de Clientes</Link>
-                        <Link to="/lista-empresas"
-                            className="m-auto btn p-2 btn-outline-success btn-se">Lista de Empresas</Link>
+                            className="m-auto btn btn-outline-info btn-sm">Clientes</Link>
                     </div>
                 </div>
                 <div >
@@ -63,33 +55,40 @@ export const CadastrarCartao = () => {
                     {status.type === 'success' ?
                         <Alert color="success">{status.message}</Alert> : ""}
                 </div>
-                <Form className="p-2" onSubmit={cadCartao}>
+                <Form className="p-2" onSubmit={cadPromocao}>                    
                     <FormGroup>
-                        <Label>Id do Cliente</Label>
-                        <Input name="ClienteId"
-                            placeholder="Id do Cliente"
+                        <Label>Nº da Empresa</Label>
+                        <Input name="id"
+                            placeholder="Id da Promoção"
                             type="text"
-                            defaultValue={ClienteId} />
+                            defaultValue={id} />
                     </FormGroup>
                     <FormGroup>
-                        <Label>Data do Cartão</Label>
-                        <Input name="dataCartao"
-                            placeholder="Digite a data do Cartao"
+                        <Label>Nome da Promoção</Label>
+                        <Input name="nome"
+                            placeholder="Nome da Promoção"
                             type="text"
-                            value={dataCartao} onChange={e => setDataCartao(e.target.value)} />
+                            value={nome} onChange={e => setNome(e.target.value)} />
                     </FormGroup>
                     <FormGroup>
-                        <Label>Validade do Cartão</Label>
-                        <Input name="validade"
-                            placeholder="Data de Validade"
+                        <Label>Descrição</Label>
+                        <Input name="data"
+                            placeholder="Descrição da Promoção"
+                            type="text"
+                            value={descricao} onChange={e => setDescricao(e.target.value)} />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label>Validade da Promoção</Label>
+                        <Input name="quantidade"
+                            placeholder="Validade da Promoção"
                             type="text"
                             value={validade} onChange={e => setValidade(e.target.value)} />
                     </FormGroup>
-
                     <FormGroup className="d-flex">
-                        <Button type="submit" outline color="dark">Salvar</Button>
-                        <Link to={"/cartao-cliente/" + id}
-                            className="btn btn-outline-primary btn-se">Retornar</Link>
+                        <Button type="submit" outline color="info">Salvar</Button>
+                        <Button type="reset" outline color="info">Limpar</Button>
+                        <Link to={"/lista-umpromocao/" + id}
+                            className="btn btn-outline-dark btn-sm">Retornar</Link>
                     </FormGroup>
                 </Form>
             </Container>
