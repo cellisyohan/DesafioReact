@@ -80,14 +80,7 @@ export const EditarCompras = () => {
                         <Input name="id"
                             placeholder="Id do Cliente"
                             defaultValue={id} />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label>Data da Compra</Label>
-                        <Input name="data"
-                            placeholder="Digite o nome do Cliente"
-                            type="text"
-                            value={data} onChange={e => setData(e.target.value)} />
-                    </FormGroup>
+                    </FormGroup>                   
                     <FormGroup>
                         <Label>Nº do Cartão</Label>
                         <Input name="CartaoId"
@@ -103,6 +96,13 @@ export const EditarCompras = () => {
                             defaultValue={PromocaoId} />
                     </FormGroup>
                     <FormGroup>
+                        <Label>Data da Compra</Label>
+                        <Input name="data"
+                            placeholder="Digite o nome do Cliente"
+                            type="text"
+                            value={data} onChange={e => setData(e.target.value)} />
+                    </FormGroup>
+                    <FormGroup>
                         <Label>Quantidade</Label>
                         <Input name="quantidade"
                             placeholder="digite a quantidade de item"
@@ -115,14 +115,12 @@ export const EditarCompras = () => {
                             placeholder="digite seu Estado"
                             type="text"
                             value={valor} onChange={e => setValor(e.target.value)} />
-                    </FormGroup>
-                    
+                    </FormGroup>                    
                     <FormGroup className="d-flex">
                         <Button type="submit" outline color="dark">Salvar</Button>
                         <Link to={"/lista-umacompra/" + CartaoId}
                             className="btn btn-outline-primary btn-se">Retornar</Link>
                     </FormGroup>
-
                 </Form>
             </Container>
         </div>
