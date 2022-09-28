@@ -1,14 +1,13 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
-import { Button, Container, Form, FormGroup, Table } from "reactstrap"
+import { Container, Table } from "reactstrap"
 import { api } from "../../config"
 
 export const CompraCartao = () => {
     const params = useParams()
     const [data, setData] = useState([])
     const [id] = useState(params.id)
-    const [card] = useState(params.CartaoId)
     const [setStatus] = useState({
         type: '',
         message: ''

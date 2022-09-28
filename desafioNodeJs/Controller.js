@@ -118,14 +118,8 @@ app.post('/promocao/empresa/:id', async (req, res) => {
 });
 
 //Realizar Compras
-app.post('/compras', async (req, res) => {
-    // if (! await promocao.findByPk(req.params.id)) {
-    //     return res.status(400).json({
-    //         error: true,
-    //         message: "Cartão não existe."
-    //     });
-    // };
-    await compra.create(
+app.post('/compras/:id', async (req, res) => {
+     await compra.create(
         req.body
     ).then(comp => {
         return res.json({

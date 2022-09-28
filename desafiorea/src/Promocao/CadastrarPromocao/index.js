@@ -6,7 +6,7 @@ import { api } from "../../config"
 export const CadastrarPromocao = () => {
     const params = useParams();
     const [id] = useState(params.id);
-    const [EmpresaId] = useState();
+    const [EmpresaId] = useState(params.id);
     const [nome, setNome] = useState();
     const [descricao, setDescricao] = useState();
     const [validade, setValidade] = useState();
@@ -20,7 +20,7 @@ export const CadastrarPromocao = () => {
             'Content-type': 'application/json'
         }
         await axios.post(api + "/promocao/empresa/" + id,
-            { id, EmpresaId, nome, descricao, validade }, { headers })
+            { EmpresaId, nome, descricao, validade }, { headers })
             .then((response) => {
                 setStatus({
                     type: 'success',
@@ -39,13 +39,15 @@ export const CadastrarPromocao = () => {
     return (
         <div>
             <Container>
-                <div className="d-flex">
+                <div className="d-flex p-2">
                     <div className="m-auto p-2">
                         <h1> Cadastrar Promoção </h1>
                     </div>
-                    <div className="p-2">
+                    <div className="m-auto p-2">
                         <Link to="/listar-clientes"
-                            className="m-auto btn btn-outline-info btn-sm">Clientes</Link>
+                            className="m-auto btn p-2 btn-outline-primary btn-se">Lista de Clientes</Link>
+                        <Link to="/lista-empresas"
+                            className="m-auto btn p-2 btn-outline-success btn-se">Lista de Empresas</Link>
                     </div>
                 </div>
                 <div >
@@ -55,13 +57,13 @@ export const CadastrarPromocao = () => {
                     {status.type === 'success' ?
                         <Alert color="success">{status.message}</Alert> : ""}
                 </div>
-                <Form className="p-2" onSubmit={cadPromocao}>                    
+                <Form className="p-2" onSubmit={cadPromocao}>
                     <FormGroup>
                         <Label>Nº da Empresa</Label>
-                        <Input name="id"
+                        <Input name="EmpresaId"
                             placeholder="Id da Promoção"
                             type="text"
-                            defaultValue={id} />
+                            defaultValue={EmpresaId} />
                     </FormGroup>
                     <FormGroup>
                         <Label>Nome da Promoção</Label>
@@ -72,23 +74,23 @@ export const CadastrarPromocao = () => {
                     </FormGroup>
                     <FormGroup>
                         <Label>Descrição</Label>
-                        <Input name="data"
+                        <Input name="descricao"
                             placeholder="Descrição da Promoção"
                             type="text"
                             value={descricao} onChange={e => setDescricao(e.target.value)} />
                     </FormGroup>
                     <FormGroup>
                         <Label>Validade da Promoção</Label>
-                        <Input name="quantidade"
+                        <Input name="validade"
                             placeholder="Validade da Promoção"
                             type="text"
                             value={validade} onChange={e => setValidade(e.target.value)} />
                     </FormGroup>
                     <FormGroup className="d-flex">
-                        <Button type="submit" outline color="info">Salvar</Button>
+                        <Button type="submit" outline color="dark">Salvar</Button>
                         <Button type="reset" outline color="info">Limpar</Button>
                         <Link to={"/lista-umpromocao/" + id}
-                            className="btn btn-outline-dark btn-sm">Retornar</Link>
+                            className="btn btn-outline-primary btn-se">Retornar</Link>
                     </FormGroup>
                 </Form>
             </Container>

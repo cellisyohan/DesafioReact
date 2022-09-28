@@ -89,20 +89,6 @@ export const EditarCompras = () => {
                             value={data} onChange={e => setData(e.target.value)} />
                     </FormGroup>
                     <FormGroup>
-                        <Label>Quantidade</Label>
-                        <Input name="quantidade"
-                            placeholder="digite a quantidade de item"
-                            type="text"
-                            value={quantidade} onChange={e => setQuantidade(e.target.value)} />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label>Valor</Label>
-                        <Input name="valor"
-                            placeholder="digite seu Estado"
-                            type="text"
-                            value={valor} onChange={e => setValor(e.target.value)} />
-                    </FormGroup>
-                    <FormGroup>
                         <Label>Nº do Cartão</Label>
                         <Input name="CartaoId"
                             placeholder="Data de Nascimento"
@@ -116,6 +102,21 @@ export const EditarCompras = () => {
                             type="text"
                             defaultValue={PromocaoId} />
                     </FormGroup>
+                    <FormGroup>
+                        <Label>Quantidade</Label>
+                        <Input name="quantidade"
+                            placeholder="digite a quantidade de item"
+                            type="text"
+                            value={quantidade} onChange={e => setQuantidade(e.target.value)} />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label>Valor</Label>
+                        <Input name="valor"
+                            placeholder="digite seu Estado"
+                            type="text"
+                            value={valor} onChange={e => setValor(e.target.value)} />
+                    </FormGroup>
+                    
                     <FormGroup className="d-flex">
                         <Button type="submit" outline color="dark">Salvar</Button>
                         <Link to={"/lista-umacompra/" + CartaoId}

@@ -7,7 +7,7 @@ import { api } from "../../config"
 export const CadastrarCompra = () => {
 
     const params = useParams();
-    const [id] = useState(params.id);
+    const [id,setId] = useState();
     const [data, setData] = useState();
     const [quantidade, setQuantidade] = useState();
     const [valor, setValor] = useState();
@@ -25,8 +25,8 @@ export const CadastrarCompra = () => {
             'Content-type': 'application/json'
         }
 
-        await axios.post(api + "/compras",
-            { id, CartaoId, PromocaoId, data, quantidade, valor }, { headers })
+        await axios.post(api + "/compras/"+ id,
+            {CartaoId, PromocaoId, data, quantidade, valor }, { headers })
             .then((response) => {
                 setStatus({
                     type: 'success',
@@ -99,7 +99,6 @@ export const CadastrarCompra = () => {
                             type="text"
                             value={valor} onChange={e => setValor(e.target.value)} />
                     </FormGroup>
-
                     <FormGroup className="d-flex">
                         <Button type="submit" outline color="dark">Salvar</Button>
                         <Button type="reset" outline color="info">Limpar</Button>

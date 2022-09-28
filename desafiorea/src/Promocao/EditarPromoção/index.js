@@ -70,22 +70,22 @@ export const EditarPromocao = () => {
                 </div>
                 <div >
                     <hr className="m-1" />
-                    {status.type === 'error' ?
-                        <Alert color="danger">{status.message}</Alert> : ""}
                     {status.type === 'success' ?
                         <Alert color="success">{status.message}</Alert> : ""}
+                    {status.type === 'error' ?
+                        <Alert color="danger">{status.message}</Alert> : ""}
                 </div>
                 <Form className="p-2" onSubmit={edtPromocao}>
                     <FormGroup className="p-2">
                         <Label>Id</Label>
                         <Input name="id"
-                            placeholder="Id da Empresa"
+                            placeholder="Id da Promoção"
                             defaultValue={id} />
                     </FormGroup>
                     <FormGroup className="p-2">
                         <Label>Nº da Empresa</Label>
                         <Input name="EmpresaId"
-                            placeholder="Id da Empresa"
+                            placeholder="Id da Empresa"                           
                             defaultValue={EmpresaId} />
                     </FormGroup>
                     <FormGroup className="p-2">
@@ -109,9 +109,9 @@ export const EditarPromocao = () => {
                             value={validade} onChange={e => setValidade(e.target.value)} />
                     </FormGroup>
                     <FormGroup className="d-flex ">
-                    <Button type="submit" outline color="dark">Salvar</Button>
-                        <Link to="/lista-empresas"
-                             className="btn btn-outline-primary btn-se">Retornar</Link>
+                        <Button type="submit" outline color="dark">Salvar</Button>
+                        <Link to="/lista-promocoes"
+                            className="btn btn-outline-primary btn-se">Retornar</Link>
                     </FormGroup>
                 </Form>
             </Container>
